@@ -1,0 +1,3 @@
+falconwing_toolchain.sh installs & configures GCC 4.3.2 with GLIBC 2.8 on a Chumby One
+
+http://wiki.chumby.com/index.php/GNU_Toolchain

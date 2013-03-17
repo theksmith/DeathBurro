@@ -1,0 +1,196 @@
+<config>
+	<!--
+	this must exist or config loader will throw error
+	simply allows you to keep track of changes to this config file.
+	-->
+	<setting category="config" name="version" val="1.0.0.0" />
+	
+	<!--
+	how often in seconds to reload this config file.
+	empty/0 will cause config to only load once at startup.
+	this is usefull so that you can make changes file without having to restart donkey.
+	recommended setting = 300 (5 minutes)
+	THIS FEATURE NOT YET WORKING IN CURRENT RELEASE - ONLY LOADS CONFIG AT STARTUP
+	-->
+	<setting category="config" name="refresh-requency" val="300" />
+	
+	<!--
+	!!!!!!!!! usefull for debugging, but is a security risk !!!!!!!!!
+	setting true will dump this entire config and the network config on the config screen, including network passwords, mail passwords, etc. 
+	default is to not show anything with phrases user|uid|pass|pwd and to not dump full network info
+	recommended setting = false
+	-->
+	<setting category="config" name="show-secure" val="false" />
+
+	
+
+	<!-- //////////////////////////////// -->
+
+	
+	
+	<!--
+	command or script for checking mail. 
+	provide full path. if calling a shell script, make sure all commands within it use full paths.
+	see DEV MANUAL for spec on what args are passed and what return is expected.
+	-->
+	<setting category="mail" name="check-script" val="//mnt/storage/usr/java/ejre1.6.0_25/bin/java -Xrs -jar /mnt/storage/deathburro/deathburro_mail.jar" />
+	
+	<!--
+	how often in seconds to check for new msgs.
+	empty/0 will disable the msgs checking completely.
+	recommended setting = 180 (3 minutes)
+	!!!!!!!!! DO NOT SET THIS TO LESS THAN 60, the mail script takes a while and you will likely overlap script runs if you go below 60 !!!!!!!!! 
+	-->
+	<setting category="mail" name="check-frequency" val="60" />
+	
+	<!--
+	maximum number of msgs to download during any check.	
+	the higher this setting, the longer each mail check will take and more data will be passed between the mail script and the Flash movie (and data could be lost due to truncation).
+	recommended setting = 20
+	!!!!!!!!! SETTING THIS TOO HIGH WILL LIKELY BREAK THINGS !!!!!!!!! 
+	-->
+	<setting category="mail" name="check-maxdownload" val="20" />
+	
+	<!--
+	mail server config for where to fetch msgs. 
+	see USER MANUAL for default valid msg spec.
+	the block below are all required settings.
+	-->
+	<setting category="mail" name="protocol" val="IMAP" /><!-- ONLY IMAP SUPPORTED IN THIS RELEASE -->
+	<setting category="mail" name="server" val="imap.gmail.com" />
+	<setting category="mail" name="port" val="993" />
+	<setting category="mail" name="username" val="USERNAME@gmail.com" />
+	<setting category="mail" name="password" val="PASSWORD" />
+	
+	<!-- optional, default is false -->
+	<setting category="mail" name="ssl" val="true" />
+	
+	<!-- 
+	the next few settings determine what will be downloaded and how it will be treated.
+	the simplest thing, if using gmail, is to specify a single folder here,
+	and then in gmail setup your rules to send only what you want downloaded to that folder.
+	that way more work is done on the server and therefore the mail script is faster, network traffic is less, and in general you have more control.
+	-->
+	
+	<!--
+	optional, pipe seperated list, default is "INBOX" (set by the actual mail script).
+	if not empty, then will only download from the listed folders.
+	-->
+	<setting category="mail" name="filter-folderlist" val="FOR_DONKEY" />
+	
+	<!--
+	optional, pipe seperated list, default is empty (any subject).
+	if not empty, will download only emails with subjects containing listed phrases. example: "donkeymsg1-0|Amazon Alert|is down!|broken"
+	-->
+	<setting category="mail" name="filter-subjectlist" val="" />
+	
+	<!--
+	optional, pipe seperated list, default is empty (any sender).
+	if not empty, will download only emails with "from" addresses containing listed phrases.
+	-->
+	<setting category="mail" name="filter-fromlist" val="" />
+	
+	<!--
+	optional, pipe seperated list, default is empty (only msg spec alerts).
+	in ADDITION to the donkeymsg1-0 spec way of specifying an "alert" versus a "msg",
+	the following 2 fields allow you to setup a list of phrases, that if contained in the corresponding fields, will cause the email to be considered an "alert".
+	(if you put something here, make sure you also put it in the filter-* settings or leave the filter-* settings blank.)
+	alerts-subjectlist example: "production|live server"
+	-->
+	<setting category="mail" name="alerts-subjectlist" val="" />
+	<setting category="mail" name="alerts-fromlist" val="" />
+	
+	<!--
+	!!!!!!!!! usefull for easy remote updating, but is a security risk !!!!!!!!!
+	optional, pipe seperated list, default is empty (for security, the default here is empty means no senders allowed).
+	will parse "cmd" type msgs only for emails with "from" addresses containing listed phrases.	
+	(if you put something here, make sure you also put it in the filter-* settings or leave the filter-* settings blank.)
+	THIS FEATURE NOT YET WORKING IN CURRENT RELEASE
+	-->	
+	<setting category="mail" name="cmds-fromlist" val="" />
+	
+	<!--
+	optional, number.
+	truncates mail fields to keep the limited UI more useable (and cut down on the size of data handed between mail script and Flash).
+	-->
+	<setting category="mail" name="truncate-subject" val="100" /><!-- 100 or less recommended -->
+	<setting category="mail" name="truncate-body" val="250" /><!-- 250 or less recommended -->
+	
+	<!--
+	number of msgs to keep in the rolling history.
+	keep to a relatively small number to not eat up too much RAM as there is precious little!
+	-->
+	<setting category="mail" name="maxhistory" val="50" />
+	
+	
+	
+	<!-- //////////////////////////////// -->
+	
+	
+	
+	<!--
+	optional scheduled rest time.
+	when asleep, donkey doesn't check msgs, reload it's config, or do anything really.
+	usefull for preventing an angry donkey in the middle of the night.
+	you can also put donkey to sleep by rubbing the right ear (on screen, not the physical ear, duh).
+	-->
+	<setting category="behavior" name="sleep-at" val="19:00" /><!-- MUST BE IN 24-HOUR TIME FORMAT, example: 18:30 -->
+	<setting category="behavior" name="sleep-hours" val="11" /><!-- MUST BE LESS THAN 24 -->
+	
+	<!--
+	ways of waking donkey (besides on schedule or rebooting).
+	these supersede any scheduled behavior.
+	-->
+	<setting category="behavior" name="wake-onshake" val="true" />
+	<setting category="behavior" name="wake-onmainbutton" val="true" />
+	<setting category="behavior" name="wake-ontouch" val="false" />
+	
+	<!--
+	volume of associated behavior sounds.
+	0 to 100, 0/empty to disable the sound.	
+	-->
+	<setting category="behavior" name="volume-angry" val="100" />
+	<setting category="behavior" name="volume-excited" val="100" />
+	<setting category="behavior" name="volume-sleep" val="100" />
+	<setting category="behavior" name="volume-snore" val="100" />
+	
+	
+	
+	<!-- //////////////////////////////// -->
+	
+	
+	
+	<!--
+	enable/disable hardware features, this supersedes any other settings dependant on hardware.
+	-->
+	<setting category="hardware" name="enable-bank0pin1-out" val="true" /><!-- blue leds -->
+	<setting category="hardware" name="enable-bank0pin2-out" val="true" /><!-- red leds & lasers -->
+	<setting category="hardware" name="enable-accelerometer" val="true" />
+	<setting category="hardware" name="enable-mainbutton" val="true" />
+	
+	<!--
+	optional, number from 0 to 100.
+	master volume. leave empty to not re-set volume during startup (remembers last setting between boots).
+	-->
+	<setting category="hardware" name="startup-volume" val="100" />
+	
+	
+	
+	<!-- //////////////////////////////// -->
+	
+	
+	<!--
+	keeps a maximum number of errors in the rolling log.
+	keep number small to prevent from eating too much RAM and and because scrollbar on the errlog viewer is useless after 25 or so.
+	-->
+	<setting category="errors" name="log-maxlength" val="25" />
+	
+	
+	
+	<!-- //////////////////////////////// -->
+	
+	
+	<!--
+	FOR THIS RELEASE, NETWORK CONFIG IS A SEPARATE FILE AND USES A DIFFERENT PROCESS FOR UPDATING - see USER MANUAL for details.
+	-->
+</config>

@@ -1,0 +1,1 @@
+-protocol:IMAP -server:imap.gmail.com -port:993 -user:USERNAME -pwd:PASSWORD -ssl:1 -folders:FOR_DONKEY -subjects:* -froms:* -bodylen:100 -subjlen:50 -max:20

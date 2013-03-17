@@ -1,0 +1,224 @@
+-----------------------------------------------------------------------------------------------
+DeathBurro 1.0: DEV MANUAL
+-----------------------------------------------------------------------------------------------
+
+Document Version 1.0.0
+Authored by Kristoffer Smith (http://theksmith.com)
+
+Please read the USER MANUAL first.
+This document explains more about the hardware and software used in DeathBurro 1.0 and provides tips on how to continue to modify/extend donkey.
+Best viewed with word-wrap "off", on a wide monitor, in a text reader supporting unix style line breaks.
+
+
+
+-----------------------------------------------------------------------------------------------
+DeathBurro 1.0: DEV MANUAL: Hardware Reference
+-----------------------------------------------------------------------------------------------
+
+OVERVIEW
+
+-- DeathBurro is based on a "Chumby One" device (internal codename Falconwing). 
+-- it is actually a fully functional miniature PC running a custom Linux kernel from Chumby Industries. 
+-- the Chumby is marketed as an "internet companion device," but the company fully supports hacking it.
+-- they have released nearly all of the source code and documented many of the behind-the-scenes hardware and software features for hackers to use as they see fit.
+-- there is even a stripped down "chumby hacker board" available which is just the basic motherboard without a screen or other accessory hardware.
+-- more info: http://www.chumby.com
+-- Chumby wiki: http://wiki.chumby.com
+-- Chumby forum: http://forum.chumby.com
+
+-- the processor is a FreeScale ARM i.MX233 running at 454MHz with 64MB of internal RAM.
+-- it implements the ARM v5TE instruction set architecture.
+-- processor info: http://www.freescale.com/webapp/sps/site/prod_summary.jsp?code=i.MX233
+-- processor reference manual: http://cache.freescale.com/files/dsp/doc/ref_manual/IMX23RM.pdf
+
+-- the Chumby One, and therefore the DeathBurro has the following hardware:
+-- 1GB microSD card (hidden inside DeathBurro)
+-- Nanovision 320x240 16bit TFT 4-wire resistive touchscreen (DeathBurro's "face")
+-- 2W mono speaker in a mini ported box
+-- headphone jack (hidden inside)
+-- microphone (in right ear)
+-- rotary encoder (on ass)
+-- Freescale MMA7445 3 axis-accelerometer (hidden inside)
+-- single momentary switch input (on ass)
+-- (2) USB 2.0 ports (hidden inside, 1 is a typical port, other is just pins on motherboard)
+-- QN8005B FM Tuner (antenna wire is in mouth, must be unwound out of metal DeathBurro to pick up any stations)
+-- battery support (battery door is inside bottom of mouth)
+-- Ralink-based RT2571 802.11b WiFi (antenna at the end of the mane)
+-- 3.3V TTL serial port, 115200, 8N1 (hidden inside)
+-- GPIO interface (hidden inside as pins on motherboard, i've soldered most of these and broken them out into a multi-colored cable)
+-- I2C interface (hidden inside as pins on motherboard, this would be the ideal way to interface with other semi-autonomous modules including robotic controls)
+
+
+ADDED ACCESSORIES
+
+-- rechargeable lithium ion battery (Fujifilm NP-120 compatible) (factory Chumby does not come with battery, just empty place for one)
+-- mini powered USB hub (hidden inside, 2 ports open. in mouth is a single port on an extension cable)
+
+
+ADDED HARDWARE
+
+-- several bright white 12v LED strip lights inside the base. these are on constantly whenever 12v power is applied.
+
+-- several blinking high intensity red 12v LED strips that can be turned on/off via GPIO Bank 0 Pin 1 (by setting HI/OFF states).
+-- several blinking high intensity blue 12v LED strips that can be turned on/off via GPIO Bank 0 Pin 2 (by setting HI/OFF states).
+
+-- 2 low power red lasers that can be turned on/off via GPIO Bank 0 Pin 1 (by setting HI/OFF states)
+
+-- a dual 12v electro-mechanical relay module: http://www.alltronics.com/mas_assets/acrobat/KIT_156.pdf
+-- the module is controlled by a 5V circuit that accepts HI or LOW inputs to trigger the relays, and isolates the 5v inputs from the 12v circuitry.
+-- currently this module's HI-triggered inputs are tied to the Bank 0 Pin 1 & 2 GPIO interfaces on the chumby.
+-- the outputs trigger the LEDs and lasers.
+
+-- an external high quality regulated 12v power supply in the form of a wall-wort provides main system power. this provides direct power for the LEDs.
+-- a barrel plug port on the ass is where you connect the 12v.
+-- an resettable 2 amp circuit breaker provides system protection and is located on the ass as well.
+
+-- an internal regulated power supply converts the 12v to 5v for powering the Chumby One, mini USB hub, and lasers.
+
+-- for a diagram of what parts are where and additional info, see: http://theksmith.com/technology/death-burro-part-4-thems-tha-guts/
+
+
+PHYSICAL CASE
+
+-- the DeathBurro outer casing is rustic Mexican metal sculpture art
+-- donkey's right panel side was cut completely off of the rest of the sculpture.
+-- then "L" tabs where welded inside the main portion to allow the panel to be screwed back on.
+-- 1" holes were drilled throughout the sculpture and then covered with double layers of mesh to allow light from inside the donkey to show through.
+-- a whole for a screen was cutout, and the ears customized with lights covered by mesh.
+-- more holes were drilled for controls, the WiFi antenna, and the external power port.
+-- the donkey was painted flat primer black (special rust-proofing paint was needed).
+
+-- all components were removed from the Chumby One device. 
+-- the screen bezel and battery compartment portions of the Chumby On were cut out and used in the sculpture case.
+-- all of the hardware components where mounted to the main sculpture portion so that the right side panel can easily be removed (like a typical computer case).
+
+-- for more info on the build process, see the early posts at: http://theksmith.com/tagged/deathburro
+
+
+
+-----------------------------------------------------------------------------------------------
+DeathBurro 1.0: DEV MANUAL: Software Reference
+-----------------------------------------------------------------------------------------------
+
+
+DEV ACCESS OVERVIEW
+
+-- DeathBurro by default has SSHD running. you can remote in using Putty on Windows or ssh on Linux...
+-- ! MAKE SURE to configure your SSH client to keep-alive at 30 seconds (or the donkey won't respond again after a timeout).
+-- the default account on the chumby is root with no password. see the acccounts.txt file for current config.
+-- (note: Linux: ssh root@(your-device-IP), then just press enter)
+-- if you are running the Chumby factory interface (like right after a rescue), you can start SSHD via: control panel > settings > chumby info > PI symbol in upper right corner > enable sshd
+-- if using DHCP, you can find the IP from the DeathBurro options > show status info screen (scroll to bottom), or on the Chumby Factory interface via: control panel > settings > chumby info
+
+-- you can always plug in a USB keyboard and the screen should pull up a tiny shell console.
+
+-- /mnt contains any mounted storage.
+-- /mnt/usb is a link to the first mounted usb device, usually this USB drive when you are working on donkey.
+-- /mnt/storage is the internal SD card, this or /tmp is where you mostly want to work.
+
+-- copy files to donkey using scp (or windows pscp if you have Putty), or copy to a USB drive and put that in donkey and remote in.
+
+-- important portions of the root filesystem are mounted readonly (/psp, /usr, etc)
+-- if you need to modify these areas, issue command: mount -o remount,rw /
+-- do your changes, then issue: sync
+-- and finally issue: mount -o remount,ro / (or just reboot)
+
+-- shutdown command: shutdown
+-- reboot command: reboot_normal.sh
+-- to modify passwords (root and default are the only users): 
+chumby:/# mount -o remount,rw / && sync && passwd {optional username}
+chumby:/# sync && mount -o remount,ro /
+
+
+DEATHBURRO MODIFICATIONS OVERVIEW
+
+(in progress)
+
+
+ADVANCED DEV
+
+(in progress)
+
+
+FUTURE MODIFICATIONS
+
+(in progress)
+
+
+
+
+-----------------------------------------------------------------------------------------------
+DISORGANIZED NOTES IN PROGRESS
+-----------------------------------------------------------------------------------------------
+
+
+http://wiki.chumby.com/index.php/Chumby_Software_Applications,_Scripts_and_Tools
+http://wiki.chumby.com/index.php/Development_tools
+http://wiki.chumby.com/index.php/Scratchbox
+http://wiki.chumby.com/index.php/Hacking_Linux_for_chumby
+
+
+--enable ssh
+--see: http://wiki.chumby.com/index.php/Chumby_tricks#Hidden_screen_in_Control_Panel
+--see: http://wiki.chumby.com/index.php/Chumby_tricks#Open_a_secure_shell_.28SSH.29_console_on_the_chumby
+
+
+--set sshd to startup automatically
+--see: http://wiki.chumby.com/index.php/Chumby_tricks#Launching_sshd_at_startup
+touch /psp/start_sshd
+
+
+--install custom CGI scripts
+mkdir /psp/cgi-bin
+(create or copy the scripts)
+chmod +x scriptname
+
+
+--install toolchain
+make
+(will ask if you want to install GCC toolchain, select Y and allow it to download and install)
+sync
+
+
+--replace opening animation
+mount -o remount,rw /
+cd /usr/widgets
+cp opening.swf opening.swf.default
+cp /mnt/usb/rescue/opening.swf opening.swf
+sync
+mount -o remount,ro /
+
+
+-- hardware stuff
+
+to turn on, then off, GPIO bank 0 pin 1
+regutil -w HW_PINCTRL_MUXSEL0_SET=0x0000000c
+regutil -w HW_PINCTRL_DOE0_SET=0x00000002
+regutil -w HW_PINCTRL_DOUT0_SET=0x00000002
+regutil -w HW_PINCTRL_DOUT0_CLR=0x00000002
+
+or: regutil -w HW_PINCTRL_MUXSEL0_SET=0x0000000c && regutil -w HW_PINCTRL_DOE0_SET=0x00000002 && regutil -w HW_PINCTRL_DOUT0_SET=0x00000002
+then: regutil -w HW_PINCTRL_MUXSEL0_SET=0x0000000c && regutil -w HW_PINCTRL_DOE0_SET=0x00000002 && regutil -w HW_PINCTRL_DOUT0_CLR=0x00000002
+
+to turn on, then off, GPIO bank 0 pin 2
+regutil -w HW_PINCTRL_MUXSEL0_SET=0x00000003
+regutil -w HW_PINCTRL_DOE0_SET=0x00000001
+regutil -w HW_PINCTRL_DOUT0_SET=0x00000001
+regutil -w HW_PINCTRL_DOUT0_CLR=0x00000001
+
+this was explained on the forum as such:
+
+regutil -w HW_PINCTRL_MUXSEL0_SET=0x0000000c
+updates the 16 bit register to 0000 0000 0000 1100. This is because 0x0000000c = 12 in decimal which equals 1100 in binary. According to BANK0_PIN01 in table 37-8, the bits 2 and 3 need to be set (i.e 1100 [3210]).
+
+regutil -w HW_PINCTRL_DOE0_SET=0x00000002
+updates the 16 bit register to 0000 0000 0000 0010. This command enables output for pin 1 on bank 0.
+
+regutil -w HW_PINCTRL_DOUT0_SET=0x00000002
+goes high on the pin
+
+regutil -w HW_PINCTRL_DOUT0_CLR=0x00000002
+turns the pin off
+
+regutil -w HW_PINCTRL_DOUT0_TOG=0x00000002
+toggles the pins state

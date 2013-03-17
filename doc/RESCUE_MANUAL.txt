@@ -1,0 +1,117 @@
+-----------------------------------------------------------------------------------------------
+DeathBurro 1.0: RESCUE MANUAL
+-----------------------------------------------------------------------------------------------
+
+Document Version 1.0.0
+Authored by Kristoffer Smith (http://theksmith.com)
+
+Please read the USER MANUAL first.
+This document explains how to use the USB Helper Drive "rescue" folder.
+Best viewed with word-wrap "off", on a wide monitor, in a text reader supporting unix style line breaks.
+
+
+
+-----------------------------------------------------------------------------------------------
+DeathBurro 1.0: RESCUE MANUAL: Important Overview!
+-----------------------------------------------------------------------------------------------
+
+-- there is a USB port on a cable in donkey's mouth (tucked up towards the top), use that port with this USB drive and the instructions below.
+
+-- the Chumby factory interface has a control panel and also loads "widgets" from chumby.com. the default widget *should* just be a black screen telling you it's the default widget for DeathBurro.
+-- if this factory interface is running, press the ass button to switch between the control panel and widget views.
+-- once on the control panel view, there are several options. most important is the hidden screen at: control panel > settings > chumby info > faint PI symbol in upper right corner
+-- the hidden screen has the reboot/off buttons. with a battery in donkey, and this factory interface running, this hidden screen is the only way to reboot/shutdown donkey.
+
+
+
+-----------------------------------------------------------------------------------------------
+DeathBurro 1.0: RESCUE MANUAL: Temporarily Restore Chumby Factory Interface
+-----------------------------------------------------------------------------------------------
+
+-- there are several features in the factory control panel which have not yet been coded into DeathBurro Main Interface or app config file.
+-- to temporarily restore this factory control panel...
+1. put the USB Helper Drive in your computer.
+2. copy the "controlpanel.swf" file from the USB/rescue folder to the root of the USB drive.
+3. eject the USB drive from your computer and plug it into the USB port in donkey's mouth.
+2. reboot or power up donkey (see Important Overview section above and/or USER MANUAL).
+5. the original control panel should load and start playing the default widget.
+6. press the ass button to get into the control panel, adjust settings as needed.
+7. when finished, remove the USB drive from donkey, and reboot donkey (see Important Overview section above).
+8. the donkey should boot back to the DeathBurro Main Interface (the donkey face with big eyes).
+9. be sure to put the USB drive back in your computer and remove the "controlpanel.swf" file from the USB root!
+
+
+
+-----------------------------------------------------------------------------------------------
+DeathBurro 1.0: RESCUE MANUAL: Complete Wipe-n-Restore
+-----------------------------------------------------------------------------------------------
+
+
+RESCUE STEP 1 - perform a complete Chumby factory reset.
+
+-- ! if at any point during this step you are prompted that an update is available to download, respond NO or LATER 
+-- you *could* install any update to get latest software and then skip STEP 2, but if Chumby has made significant changes then our final customization step may not install correctly.
+1. be sure the USB drive is removed from the donkey.
+2. reboot or power up donkey (see Important Overview section above and/or USER MANUAL).
+3. touch the screen and continue to press while donkey is rebooting.
+4. continue pressing the screen until you see a the message "Loading Special Options"
+5. once the "Special Options" menu appears, tap the "Restore factory settings" button.
+6. acknowledge you are sure you want to do this.
+7. donkey will reboot, and restore the factory Chumby partition, wiping out all customizations.
+8. after the reboot, a tour animation will play, you may tap the "Exit" button any time.
+9. select the "Never Show Tour Again" button.
+10. follow the prompts for touchscreen calibration.
+11. follow the prompts to setup a WiFi connection (note the IP when done in case you want to remote in later).
+12. follow the prompts to configure your timezone (tap the map multiple times to zoom in until you are able to select your nearest city).
+13. when everything is complete, the default DeathBurro widget should load from chumby (see Important Overview section above), or if no WiFi is available, a simple clock will show.
+14. continue to RESCUE STEP 2
+
+
+RESCUE STEP 2 - install the Chumby factory update.
+
+-- ! again, if at any point during this step you are prompted that an update is available to download, respond NO or LATER 
+1. put the USB Helper Drive in your computer.
+2. be sure there are no files on the root of the USB drive.
+3. copy the "update.tgz" file from the USB/rescue folder to the root of the USB Drive.
+4. eject the USB drive from your computer and plug it into the USB port in donkey's mouth.
+5. reboot or power up donkey (see Important Overview section above and/or USER MANUAL).
+6. touch the screen and continue to press while donkey is rebooting.
+7. continue pressing the screen until you see a the message "Loading Special Options"
+8. once the "Special Options" menu appears, tap the "Install Updates" button.
+9. choose "Install from USB flash drive"
+10. donkey will install an update, reboot, and then install a second part of the update. you must let it install both updates!
+11. you *may* have to configure touchscreen/WiFi/timezone again, please do so.
+12. when done, you'll briefly see the message "Update successfully completed" and then the default widget should load (see Important Overview section above).
+13. reboot donkey once more (see Important Overview section above), and follow any prompts until you again see the default widget or clock.
+14. continue to RESCUE STEP 3
+
+
+RESCUE STEP 3 - install the DeathBurro 1.0 modifications.
+
+1. remove the USB drive from donkey.
+2. put the USB Helper Drive in your computer.
+3. delete the "update.tgz" file from the root of the USB drive.
+4. copy the "debugchumby_full_restore" file from the USB/rescue folder to the root of the USB Drive.
+6. rename the copied file to just "debugchumby".
+7. eject the USB drive from your computer and plug it into the USB port in donkey's mouth.
+8. reboot or power up donkey (see Important Overview section above and/or USER MANUAL).
+9. you should see normal startup screen/animations and then a black screen with blue text. the rescue script is then running.
+10. the rescue script can take a long time (maybe up to 20 minutes), please be patient and don't restart while it's working.
+11. once the rescue script is complete, either the default widget will load or *maybe* the DeathBurro Main Interface.
+12. regardless of which loads, remove the USB drive and reboot donkey one final time (see Important Overview section above and/or USER MANUAL).
+13. on the final boot, you should see the DeathBurro opening animation instead of the Chumby factory opener, and then the DeathBurro Main Interface should load and be fully functional.
+14. ! be sure to place the USB drive back in your computer and delete the "debugchumby" file from the root to restore the drive to its original state.
+
+
+FINAL NOTES
+
+-- ! after a rescue, donkey is completely un-secured. SSHD is running and the default root account has no password.
+-- ! please immediately remote in and setup some security (see the DEV MANUAL).
+
+-- you can always plug in a USB keyboard and the screen should pull up a tiny shell console.
+
+-- if none of the above fixes a bricked donkey..
+-- you will need to take the cover off of donkey to remove the microSD card from the main system board (see the DEV MANUAL for more info).
+-- there is a factory image of the entire microSD card in this USB drive's USB/dev/resources/chumbyone_microsd_image folder.
+-- there is also a utility in that folder for Windows to write the image to the microSD card (or Google how to do it from Linux).
+-- re-writing the entire card with this factory image should replace the RESCUE STEP 1 instructions above, continue to RESCUE STEP 2.

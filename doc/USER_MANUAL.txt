@@ -1,0 +1,255 @@
+-----------------------------------------------------------------------------------------------
+DeathBurro 1.0: USER MANUAL
+-----------------------------------------------------------------------------------------------
+
+Document Version 1.0.0
+Authored by Kristoffer Smith (http://theksmith.com)
+
+This document describes DeathBurro and provides general use instructions.
+Please read completely before diving into the DEV MANUAL or RESCUE MANUAL.
+Best viewed with word-wrap "off", on a wide monitor, in a text reader supporting unix style line breaks.
+
+
+
+-----------------------------------------------------------------------------------------------
+DeathBurro 1.0: USER MANUAL: Introduction
+-----------------------------------------------------------------------------------------------
+
+-- donkey is based on a "Chumby One" device.
+-- the original interface and functionality of the Chumby has been replaced with the custom DeathBurro app, and custom hardware has been added.
+-- the DeathBurro Main Interface (the donkey face with big eyes) should meet 90% of your day-to-day needs.
+-- however, some settings and certain features are only available via manual file updates or a temporary restore of the factory control panel (see below).
+
+-- for in-depth info on the software & hardware, see the DEV MANUAL
+
+-- donkey's primary function is to check & download email and alert everyone when there are new msgs.
+-- donkey is currently programmed to differentiate between an "alert" msg and a regular "msg".
+-- alerts make the donkey angry and you will not miss them. msgs just make the donkey excited.
+-- whenever donkey gets new mail, the resulting mood will continue until you touch the screen or shake donkey.
+-- you can configure where/how/how-often/etc that mail is checked (see the "Configuring" section below).
+-- you can also configure what is downloaded based on matching criteria and what is considered an alert versus a msg.
+-- as mail is retrieved it is marked as "read" on the server. no mail is ever deleted by donkey on the server though.
+-- NOTE: the msg reader/indicator functionality is stateless (between boots). msgs are not stored on the physical media within donkey, i.e. only the msgs retrieved since donkey was last booted are shown.
+
+
+
+-----------------------------------------------------------------------------------------------
+DeathBurro 1.0: USER MANUAL: Features & Interface
+-----------------------------------------------------------------------------------------------
+
+
+FACTORY CHUMBY CONTROL PANEL
+
+-- donkey should always load the DeathBurro Main Interface (the donkey face with big eyes).
+-- however, if something goes wrong or you need to adjust settings not available via this version of the Main Interface, you may be seeing the Chumby factory interface.
+-- the factory interface has a control panel and also loads "widgets" from chumby.com. the default widget *should* just be a black screen telling you it's the default widget for DeathBurro.
+-- GOOD TO KNOW: if this factory interface is running, press the ass button to switch between the control panel and widget views.
+-- once on the control panel view, there are several options. most important is the hidden screen at: control panel > settings > chumby info > faint PI symbol in upper right corner
+-- the hidden screen has the reboot/off buttons. with a battery in donkey, and this factory interface running, this hidden screen is the only way to reboot/shutdown donkey.
+
+-- you may need to temporarily restore this Chumby factory interface to adjust certain settings (see the "Configuring" section below).
+
+-- if the Chumby factory interface persists, you experience other glitches, or you fail at hacking and brick donkey, follow the wipe-n-restore procedure detailed in the RESCUE MANUAL
+
+
+TIPS
+
+-- overall donkey is running similar hardware to a first generation Pentium processor. i.e. donkey isn't winning any races, be patient with the UI.
+-- the touchscreen responds best to a fingernail or stylus instead of the fleshy part of your finger (tip: use the back of your finger so that only the fingernail hits the screen).
+-- the knob on the ass is by default a volume control (you can also adjust volume from the original control panel, see below).
+-- ! NOTE: the volume knob is not working in this release. there is a physical connection issue at the main board.
+-- there is a USB port on a cable tucked in the top of donkey's mouth.
+-- donkey's right ear (on the screen, not the physical ear) is sensitive, rub it a few times and see...
+
+
+SLEEP/WAKE
+
+-- donkey can be put to sleep with user interaction, based on a schedule (see the "Configuring" section below), or due to loss of power (running on battery).
+-- when asleep, the screen dims, the UI hides all features, and the donkey's eyes close.
+-- if donkey is asleep, nothing is being done. i.e. mail is not checked, the config is not reloaded, UI features are not available.
+-- by default, you can shake donkey (gently!) to force a wake-up (unless on battery power). when running on battery only, donkey can do nothing but sleep.
+-- you can configure other ways to wake donkey (see the "Configuring" section below).
+
+
+ALERTS/MOODS
+
+-- when donkey's mood changes due to receiving new mail, sounds/lights/lasers turn on.
+-- tapping the screen acknowledges the donkey's mood and calms donkey back down.
+
+
+ADDITIONAL SCREENS
+
+-- the dark blue "tab" at the top of the screen either contains a clock, or when there is unread mail, the colored phrase "msgs!"
+-- tapping this tab will rolldown several "screens".
+-- switch to a screen by tapping it's tab. tap the currently open screen's tab again (with the word "close" on it) to rollup all the screens.
+
+-- the main center tab screen is the msg reader.
+-- when there are msgs, the total and unread counts are shown at the top. if there are multiple msgs, <PREV / NEXT> buttons are enabled.
+-- msgs are displayed in order from newest-first to oldest-last. only msgs retrieved since the last boot are shown.
+-- msgs are marked "read" within the msg reader when seen. this does not affect the actual "read" flag on the mail server (all downloaded msgs are already marked "read" on the sever at time of download).
+-- "alert" type msgs have a red background, regular "msg" type msgs have the default blue background, and "cmd" type msgs have a yellowish background.
+-- NOTE: "cmd" msg functionality is missing from this release.
+
+-- the left tab screen, labeled "options", gives you access to several features.
+-- you can shutdown/reboot/soft-reboot, view status, view the error log, view the config, clear the error log, reset SSHD, mark msgs read, or clear all msgs.
+-- after clicking a button, you will get a popup. click the "ok" button at the bottom to close the popup.
+-- the "show status" popup gives you info on several hardware devices (including network IP), as well as general system info like uptime, application error count, mail check status, etc.
+-- the "show error log" popup displays a maximum of 25 errors due to limited screen space. this limit is configurable in the app config file.
+-- the "show config" popup, by default, does not include sensitive information such as the full network config and mail usernames/passwords, etc. this setting is configurable.
+-- the "reset SSHD" button was added last minute to address random non-responsiveness to ssh requests. it now appears to be a network driver issue, so this button will be removed in the first patch release.
+-- the "soft reboot" button restarts the network and the DeathBurro Main Interface. it does not perform all the same tasks as a full boot but is much quicker. this appears to fix the network non-responsiveness.
+
+-- the right tab screen, labeled "about", is a simple informational screen.
+
+
+POWER & BATTERY BACKUP
+
+-- donkey has a battery backup for brief power failures.
+-- the battery is under a door in the mouth. note that the battery is in backwards, you have to use a hook tool to pop up the back of the battery first to get it out (oops).
+-- when running only on battery power, donkey goes to sleep (also, by electrical constraint, none of the LED's or lasers will work anyway).
+-- there is a bug that prevents the backlight from turning all the way off when you power down with a battery installed. the following procedure will overcome that bug:
+1. have donkey plugged into the wall.
+2. shutdown donkey via the DeathBurro Main Interface, the Chumby factory interface, or from SSH session (command "shutdown").
+3. wait a few seconds for the interface to fade.
+4. unplug donkey from the wall.
+
+-- donkey is very sensitive to power fluxuation, hence the battery backup inclusion.
+-- due to this, do not use any other power supply than the quality one that was provided. 
+
+
+SENDING MAIL TO DONKEY
+
+-- see the full "Mail Check/Notify Feature" section below
+
+
+
+-----------------------------------------------------------------------------------------------
+DeathBurro 1.0: USER MANUAL: Mail Check/Notify Feature
+-----------------------------------------------------------------------------------------------
+
+
+OVERVIEW
+
+-- by default, donkey is setup to check a certain folder of a certain Gmail account (see the "accounts.txt" file).
+-- the Gmail account has rules setup to automatically place mail matching the "donkeymsg1-0" spec into the special folder (see spec info below).
+-- the recommendation is to simply modify the rules in this Gmail account rather than messing with the app config file. this keeps network traffic down and lessens the donkey's workload.
+-- alternately, you can override what account/server is checked from the app config file (see the "Configuring" section below).
+-- you can also specify folder, subject and sender filters from the app config file, but again the recommendation is to simply manage this from the more flexible Gmail rules interface.
+
+-- most commonly you will simply use the spec below when setting up alerts from apps that you have control over,
+-- you will then likely edit the Gmail rules to dump additional non-spec mail that is important (but that you have no control over) into the special folder as well,
+-- and finally you would likely edit the app config file's mail:alerts-subjectlist and/or mail:alerts-fromlist settings to tell donkey which of the additional non-spec mail to consider an "alert" (rather than just a plain "msg").
+
+
+DONKEYMSG1-0 SPEC (and msgs reader interpretation of spec msgs)
+
+-- by default the donkey is setup to respond to a certain format of email, referred to as the donkeymsg1-0 spec. 
+-- msgs matching this spec are parsed with certain rules. the spec format is as follows...
+
+-- EMAIL SUBJECT: the subject should start with the string "donkeymsg1-0". this will be stripped from the subject before being shown on the donkey msgs reader.
+-- the full subject spec is "donkeymsg1-0|MSGTYPE|the actual subject phrase|IMGFILENAME"
+-- MSGTYPE is either "msg", "alert", or "cmd". this allows you to tell donkey how to behave.
+-- IMGFILENAME is optional and would be the name of an existing image file in the //mnt/storage/deathburro/images directory. this allows you to display a pre-loaded small image with the msg.
+-- you can also do shortcut "donkeymsg1-0|the actual subject phrase" to default to the "MSG" msgtype
+-- and finally you can do just "donkeymsg1-0" and no subject will be shown on the donkey msgs reader.
+-- by default the subject is truncated by the DeathBurro mail checking script (to fit the small screen better), but this is configurable via the app config file.
+-- the "cmd" msgtype is used to specify that the body of the mail is a shell script to be executed upon receipt.
+-- the "cmd" msgtype is obviously a security risk, so by default the app config file mail:cmds-fromlist setting is empty, meaning no-one is approved to send cmds.
+-- ! NOTE: the "cmd" msgtype is not yet implemented in this release (msgs are shown a special color, but scripts are not executed).
+-- ! NOTE: the IMGFILENAME param is not yet implemented in this release. if passed it will be ignored completely.
+
+-- EMAIL BODY: should be plain text (mime: text/plain).
+-- most modern email clients send HTML emails by default, but many actually encode them in a multi-part email with a plain text version.
+-- if a multi-part msg is found, attempts are made to find a plain text portion and display that. 
+-- portions left out will be shown at the end of the body as simply [not supported: {mime-type}] in the donkey msgs reader.
+-- by default the body is truncated by the DeathBurro mail checking script (to fit the small screen better), but this is configurable via the app config file.
+
+-- EMAIL SENDER: nothing special here, the mail server donkey gets mail from(default Gmail) will decide how to format the sender information for its IMAP clients (which donkey is one of).
+-- the donkey msgs reader attempts to display only the actual email address and not the complete sender name (to fit the small screen better).
+
+-- EMAIL DATE-TIME: the date/time that the email is received by the mail server will be the date/time shown for the msg (regardless of when donkey actually fetches the msg).
+-- making sure the server (or Gmail account) is set to the same time-zone as donkey will alleviate potential confusion.
+
+-- EMAIL ATTACHMENTS: attachments are only retrieved for "cmd" msgtypes.
+-- attachments are downloaded to the //TMP folder. 
+-- it is up to the sender to provide a script in the body of the mail to do something with the files (i.e. copy to //mnt/storage/deathburro/images folder, overwrite the network config, etc).
+-- ! NOTE: attachment support is not yet implemented in this release. attachments will be ignored completely.
+
+
+
+-----------------------------------------------------------------------------------------------
+DeathBurro 1.0: USER MANUAL: Configuring
+-----------------------------------------------------------------------------------------------
+
+OVERVIEW
+
+-- no interactive config functionality has been built into the DeathBurro Main Interface for this release.
+-- the majority of configuration can be however be done by altering 2 files and following a simple procedure for updating the files on donkey.
+
+
+NETWORK (WiFi) CONFIG
+
+-- default config is to grab the first open access point donkey finds.
+-- if your WAP is running MAC address filtering, note that the donkey's address is: D8:5D:4C:92:1A:70
+
+-- CONFIG METHOD 1: network config is updateable from the Chumby factory interface, see the RESCUE MANUAL for instructions.
+-- changes made via this method are persistent so long as the second method does not overwrite them.
+
+-- CONFIG METHOD 2: the USB drive "network_config" file...
+1. put the USB Helper Drive in your computer.
+2. copy the sample "network_config" file from the USB/rescue folder to the root of the USB drive.
+3. edit the copied file, modify the single XML "configuration" node to match your network settings (see below for possible values).
+4. save changes then eject the USB drive from your computer and plug into the USB port on the cable inside donkey's mouth.
+5. reboot or power-up donkey.
+6. the network config file on the USB drive will be copied to donkey and the network adapter will configure itself.
+7. you can check the WiFi status and IP address from the (options) > (show status) screen on the DeathBurro Main Interface.
+8. be sure to unplug the USB drive from donkey and put back in your computer and remove the "network_config" file from the USB root!
+
+-- options for the configuration node for METHOD 2 (keep them all, just make empty any that do not apply)...
+<configuration
+type="wlan|lan|eth|3G|ppp"
+ssid="ethernet|YourSSID"
+auth="WPAEAP|WEPAUTO|WPAPSK|WPA2PSK|WPA2EAP|WPS|OPEN"
+encryption="WEP|TKIP|AES|PBC|PIN|NONE"
+key="YourKey|key-in-hex-format" (for WPAEAP/WPAEAP set this to your EAP password)
+encoding="ascii|hex" (applies to key)
+username="MyUsername" (for WPAEAP/WPAEAP set this to your EAP username)
+allocation="dhcp|static"
+ip="IPV4" (only applies if allocation = "static")
+netmask="IPV4" (only applies if allocation = "static")
+gateway="IPV4" (only applies if allocation = "static")
+nameserver1="IPV4" (only applies if allocation = "static", is hardcoded to OpenDNS servers if using DHCP)
+nameserver2="IPV4" (only applies if allocation = "static", is hardcoded to OpenDNS servers if using DHCP)
+hwaddr="" (leave blank)
+/>
+-- any values with certain special chars must be escaped as follows...
+char:	escape-code:
+"	&quot;
+'	&apos;
+<	&lt;
+>	&gt;
+&	&amp;
+
+-- FYI: the above procedure just automates copying the network_config file from the USB drive to the donkey's //psp folder and then running a script to re-parse it and re-init the net adapters.
+
+
+MISC CONFIG (touchscreen calibration, date/time, timezone)
+
+-- these are easily updated with the Chumby factory interface, see the RESCUE MANUAL for instructions.
+-- FYI: these settings are stored in various files on the donkey's root file system, search the Chumby wiki or forum for more info on directly modifying them directly.
+
+
+DEATHBURRO APP CONFIG
+
+-- nearly all DeathBurro app functionality is configurable via a single xml file that is loaded/parsed when the DeathBurro Main Interface starts.
+1. put the USB Helper Drive in your computer.
+2. copy the "deathburro.xml" file from the USB/rescue/deathburro folder to the root of the USB drive.
+3. edit the copied file, the file is heavily commented and explains every setting. be sure to create valid XML (i.e. don't miss any quotes or backslashes or forget to escape a greater-than, etc).
+4. copy the file "debugchumby_update_config" from the USB/rescue folder to the root of the USB drive, then rename the copied file to just "debugchumby".
+5. eject the USB drive from your computer and plug into the USB port on the cable inside donkey's mouth.
+6. reboot or power-up donkey.
+7. the network config file on the USB drive will be copied to donkey.
+8. you can check that the settings were parsed as expected from the (options) > (show config) screen on the DeathBurro Main Interface.
+9. be sure to unplug the USB drive from donkey and put back in your computer and remove the 2 files from the USB root!
+
+-- FYI: the above procedure just automates copying the deathburro.xml file from the USB drive to the donkey's //mnt/storage/deathburro folder.

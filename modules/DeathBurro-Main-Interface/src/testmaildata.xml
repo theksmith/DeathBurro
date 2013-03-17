@@ -1,0 +1,25 @@
+<MailScriptOutput>
+<ScriptMail>
+<ScriptMailItem><MailItemSubject><![CDATA[donkeymsg1-0]]></MailItemSubject><MailItemDate>Tuesday, December 13, 2011 7:16 AM</MailItemDate><MailItemSender><![CDATA[Im Bob Dole <thebob@dolehouse.com>]]></MailItemSender><MailItemBody><![CDATA[this is a spec test with no subject
+
+[multipart not included: TEXT/HTML; charset=ISO-8859-1]]]></MailItemBody></ScriptMailItem>
+
+<ScriptMailItem><MailItemSubject><![CDATA[donkeymsg1-0|test subject]]></MailItemSubject><MailItemDate>Tuesday, December 13, 2011 7:17 AM</MailItemDate><MailItemSender><![CDATA[Alert Server <alerts@gmail.com>]]></MailItemSender><MailItemBody><![CDATA[this is a simple spec msg with just a subject and body
+
+[multipart not included: TEXT/HTML; charset=ISO-8859-1]]]></MailItemBody></ScriptMailItem>
+
+<ScriptMailItem><MailItemSubject><![CDATA[donkeymsg1-0|alert|something broke!]]></MailItemSubject><MailItemDate>Tuesday, December 13, 2011 7:18 AM</MailItemDate><MailItemSender><![CDATA[Im Bob Dole <thebob@dolehouse.com>]]></MailItemSender><MailItemBody><![CDATA[this is a full spec msg example!
+
+the body has 3 lines.
+
+[multipart not included: TEXT/HTML; charset=ISO-8859-1]]]></MailItemBody></ScriptMailItem>
+
+<ScriptMailItem><MailItemSubject><![CDATA[donkeymsg1-0|alert|plain-text-alert]]></MailItemSubject><MailItemDate>Tuesday, December 13, 2011 7:19 AM</MailItemDate><MailItemSender><![CDATA[Im Bob Dole <thebob@dolehouse.com>]]></MailItemSender><MailItemBody><![CDATA[this is a plain text example...
+with
+4
+lines!]]></MailItemBody></ScriptMailItem>
+
+</ScriptMail>
+<ScriptStatus>COMPLETE!</ScriptStatus>
+</MailScriptOutput>
+

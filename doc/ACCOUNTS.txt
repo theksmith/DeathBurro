@@ -1,0 +1,68 @@
+-----------------------------------------------------------------------------------------------
+DeathBurro 1.0: ACCOUNTS
+-----------------------------------------------------------------------------------------------
+
+Document Version 1.0.0
+Authored by Kristoffer Smith (http://theksmith.com)
+
+Please read the USER MANAUL first.
+This document lists all the sensitive information for any accounts associated with the DeathBurro project.
+Best viewed with word-wrap "off", on a wide monitor, in a text reader supporting unix style line breaks.
+
+
+
+-----------------------------------------------------------------------------------------------
+DeathBurro 1.0: ACCOUNTS: Important Overview!
+-----------------------------------------------------------------------------------------------
+
+-- !!! you must protect access to your individual version of this file, and to the network_config and deathburro.xml files!
+
+
+
+-----------------------------------------------------------------------------------------------
+DeathBurro 1.0: ACCOUNTS: Google/Gmail
+-----------------------------------------------------------------------------------------------
+
+-- donkey has a Google account mainly for use of Gmail which is the default mail account used by the msgs reader portion of the DeathBurro Main Interface.
+url: http://gmail.com
+username: ...@gmail.com
+password: ...
+security answer: ...
+security email: ...
+DOB: ...
+
+
+-----------------------------------------------------------------------------------------------
+DeathBurro 1.0: ACCOUNTS: Chumby.com
+-----------------------------------------------------------------------------------------------
+
+-- when you first get a Chumby device, you can't do much until you authorize it with Chumby.com (requiring an account).
+-- this account contains a "private" default widget for when the Chumby factory interface is running (please don't mess with how the channels/widgets are configured).
+url: http://chumby.com
+username: ...
+password: ...
+linked to email: ...
+security answer: ...
+DOB: ...
+
+
+
+-----------------------------------------------------------------------------------------------
+DeathBurro 1.0: ACCOUNTS: Donkey/Chumby Device
+-----------------------------------------------------------------------------------------------
+
+-- SSHD is running on default port and can be accessed with the root user below.
+-- a small webserver is running on default port with no security beyond file permissions.
+-- anyone with physical access can plug in a USB keyboard and get a shell, or plugin a USB drive with a debugchumby script on the root that will be executed.
+
+-- primary account is "root".
+username: root
+password: ...
+
+-- secondary account is "default"
+username: default
+password: ...
+
+-- there appear to be more users, including a "chumby" one...
+-- however, i do not currently know if any are required to have a certain password for the device to work? 
+-- root & default where the only ones mentioned on the forums/wiki to not have at least some password from the factory.
