@@ -12,7 +12,7 @@ For hardware details and project history, please see: [http://theksmith.com/tagg
 
 ## Getting Started
 
-Please see: /docs/USER_MANUAL.txt
+Please see: /doc/USER_MANUAL.txt
 
 IMPORTANT NOTE: The project is currently being setup in GitHub and is not complete at this time (Kristoffer 3/2013).
 
